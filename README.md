@@ -1,7 +1,8 @@
-A SQL Server datatools projects with an associated Jenkinsfile written using the opinionated declarative syntax that implements a build pipeline that:
+This repository contains a SQL Server data tools project and a Jenkinsfile written using the opinionated declarative syntax for a build pipeline that:
 
 - Checks the project out from SCM
-- Uses msbuild to build the project into a DacPac file
-- Spins up a container to deploy the DacPac to, the container spun up will use a unique name, the name of the branch suffixed by SQLLinux and a unqiue external port
+- Spins up a container to deploy the DacPac to **in serial**, the container:
+  - is named **[SQLLinux|branch name]**
+  - has a unqiue external port so as to avoid port clashes
 - Deploys the DacPac to the container
 - Tears down the container
