@@ -1,6 +1,6 @@
 def GetNextFreePort() {
     def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')    
-    return port.trim().toInteger() + Integer.valueOf(${env.BRANCH_NAME})
+    return port.trim().toInteger() + Integer.valueOf("${BRANCH_NAME}")
 }
 
 def StartContainer() {
