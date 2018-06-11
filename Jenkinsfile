@@ -1,9 +1,11 @@
 def GetNextFreePort() {
-    def port = powershell(returnStdout: true, script: '(((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1) + ($(Get-Random) % 99)')    
+    def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')    
     return port.trim()
 }
 
+@NonCPS
 def StartContainer() {
+    PORT_NUMBER = GetNextFreePort()
     bat "docker run -e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=P@ssword1\" --name ${CONTAINER_NAME} -d -i -p ${PORT_NUMBER}:1433 microsoft/mssql-server-linux:2017-GA"    
     powershell "While (\$((docker logs SQLLinux${env.BRANCH_NAME} | select-string ready | select-string client).Length) -eq 0) { Start-Sleep -s 1 }"
 }
@@ -29,7 +31,7 @@ pipeline {
     agent any
     
     environment {
-        PORT_NUMBER    = GetNextFreePort()
+        PORT_NUMBER    = 0
         SCM_PROJECT    = GetScmProjectName()
         CONTAINER_NAME = "SQLLinux${BRANCH_NAME}"
     }
@@ -53,7 +55,9 @@ pipeline {
             steps {
                 RemoveContainer()
                 timeout(time: 20, unit: 'SECONDS') {
-                    StartContainer()
+                    retry (3) {
+                        StartContainer()
+                    }
                 }
             }
         }
