@@ -7,7 +7,7 @@ def StartContainer() {
     retry (3) {
         PORT_NUMBER = GetNextFreePort()
         bat "docker run -e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=P@ssword1\" --name ${CONTAINER_NAME} -d -i -p ${PORT_NUMBER}:1433 microsoft/mssql-server-linux:2017-GA"    
-        powershell "If (\$((docker logs ${CONTAINER_NAME} | select-string \"port already in use\" | select-string client).Length) -gt 0) { throw \"Error encountered when starting container\" }"    
+        powershell "If (\$((docker logs ${CONTAINER_NAME} | select-string \"port already allocated\" | select-string client).Length) -gt 0) { throw \"Error encountered when starting container\" }"    
     }
 }
 
