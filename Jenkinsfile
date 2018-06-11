@@ -75,6 +75,7 @@ pipeline {
     post {
         always {
             //RemoveContainer()
+            print 'post: Always'
         }
         success {
             print 'post: Success'
