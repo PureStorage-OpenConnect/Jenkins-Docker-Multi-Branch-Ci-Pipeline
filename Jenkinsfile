@@ -3,7 +3,6 @@ def GetNextFreePort() {
     return port.trim()
 }
 
-@NonCPS
 def StartContainer() {
     PORT_NUMBER = GetNextFreePort()
     bat "docker run -e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=P@ssword1\" --name ${CONTAINER_NAME} -d -i -p ${PORT_NUMBER}:1433 microsoft/mssql-server-linux:2017-GA"    
@@ -55,10 +54,8 @@ pipeline {
             steps {
                 RemoveContainer()
                 timeout(time: 20, unit: 'SECONDS') {
-                    retry (3) {
-                        lock ('create SQL Server container') {
-                            StartContainer()
-                        }
+                    lock ('create SQL Server container') {
+                        StartContainer()
                     }
                 }
             }
