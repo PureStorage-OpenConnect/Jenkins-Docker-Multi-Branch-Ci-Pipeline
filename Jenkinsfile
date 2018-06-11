@@ -1,4 +1,5 @@
 def GetNextFreePort() {
+    powershell "Start-Sleep -Seconds 1"
     def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')
     return port.trim()
 }
