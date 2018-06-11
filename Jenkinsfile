@@ -1,12 +1,14 @@
 def GetNextFreePort() {
-    powershell "$rnd = Get-Random -Minimum 1 -Maximum 3;Start-Sleep -Seconds $rnd"
     def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')
     return port.trim()
 }
 
 def StartContainer() {
-    bat "docker run -e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=P@ssword1\" --name ${CONTAINER_NAME} -d -i -p ${PORT_NUMBER}:1433 microsoft/mssql-server-linux:2017-GA"    
-    powershell "While (\$((docker logs ${CONTAINER_NAME} | select-string ready | select-string client).Length) -eq 0) { Start-Sleep -s 1 }"    
+    retry (3) {
+        PORT_NUMBER = GetNextFreePort()
+        bat "docker run -e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=P@ssword1\" --name ${CONTAINER_NAME} -d -i -p ${PORT_NUMBER}:1433 microsoft/mssql-server-linux:2017-GA"    
+        powershell "If (\$((docker logs ${CONTAINER_NAME} | select-string \"port already in use\" | select-string client).Length) -gt 0) { throw \"Error encountered when starting container\" }"    
+    }
 }
 
 def RemoveContainer() {
@@ -30,7 +32,7 @@ pipeline {
     agent any
     
     environment {
-        PORT_NUMBER    = GetNextFreePort()
+        PORT_NUMBER    
         SCM_PROJECT    = GetScmProjectName()
         CONTAINER_NAME = "SQLLinux${BRANCH_NAME}"
     }
