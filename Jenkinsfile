@@ -32,7 +32,7 @@ pipeline {
     agent any
     
     environment {
-        PORT_NUMBER    
+        PORT_NUMBER    = 0
         SCM_PROJECT    = GetScmProjectName()
         CONTAINER_NAME = "SQLLinux${BRANCH_NAME}"
     }
