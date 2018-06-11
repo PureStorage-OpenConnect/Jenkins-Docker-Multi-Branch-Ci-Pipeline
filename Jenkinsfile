@@ -1,5 +1,5 @@
 def GetNextFreePort() {
-    def port = powershell(returnStdout: true, script: '(((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1) + ($(Get-Random) % 9999)')    
+    def port = powershell(returnStdout: true, script: '(((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1) + ($(Get-Random) % 99)')    
     return port.trim()
 }
 
