@@ -55,10 +55,8 @@ pipeline {
             steps {
                 RemoveContainer()
                 timeout(time: 20, unit: 'SECONDS') {
-                    retry (3) {
-                        lock ('create SQL Server container') {
-                            StartContainer()
-                        }
+                    lock ('create SQL Server container') {
+                        StartContainer()
                     }
                 }
             }
