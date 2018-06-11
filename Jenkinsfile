@@ -1,8 +1,5 @@
 def GetNextFreePort() {
-    lock ('portProvider') {
-        def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')
-    }
-    
+    def port = powershell(returnStdout: true, script: '((Get-NetTCPConnection | Sort-Object -Property LocalPort | Select-Object -Last 1).LocalPort) + 1')    
     return port.trim()
 }
 
@@ -32,7 +29,7 @@ pipeline {
     agent any
     
     environment {
-        PORT_NUMBER    = GetNextFreePort()
+        PORT_NUMBER    = 0
         SCM_PROJECT    = GetScmProjectName()
         CONTAINER_NAME = "SQLLinux${BRANCH_NAME}"
     }
@@ -54,9 +51,12 @@ pipeline {
     
         stage('start container') {
             steps {
-                RemoveContainer()
-                timeout(time: 20, unit: 'SECONDS') {
-                    StartContainer()
+                lock('start container') {
+                    RemoveContainer()
+                    PORT_NUMBER = GetNextFreePort()
+                    timeout(time: 20, unit: 'SECONDS') {
+                        StartContainer()
+                    }
                 }
             }
         }
