@@ -14,6 +14,10 @@ In this specific example we need to ensure that when spinning up containers, mul
 
 ![lockable resource](https://user-images.githubusercontent.com/15145995/46342829-b1989a00-c633-11e8-8054-07b23a202d13.PNG)
 
+# Points Of Interest
+
+![points of interest](https://user-images.githubusercontent.com/15145995/46342943-16ec8b00-c634-11e8-8b40-721b2edf52f4.PNG)
+
 
 
 
