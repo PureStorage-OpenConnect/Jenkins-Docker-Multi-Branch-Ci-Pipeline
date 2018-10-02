@@ -12,6 +12,9 @@ In software development speak, "Mutual exclusion" is a means of ensuring that on
 
 In this specific example we need to ensure that when spinning up containers, multiple containers do not attempt to start using the same port on the host. We achieve this using the lockable resource plugin for Jenkins:
 
+![lockable resource](https://user-images.githubusercontent.com/15145995/46342829-b1989a00-c633-11e8-8054-07b23a202d13.PNG)
+
+
 
 
 
