@@ -1,8 +1,17 @@
-This repository contains a SQL Server data tools project and a Jenkinsfile written using the opinionated declarative syntax for a build pipeline that:
+# Devloping Software In Teams
 
-- Checks the project out from SCM
-- Spins up a container to deploy the DacPac to, the container:
-  - is named **[SQLLinux|branch name]**
-  - has a unqiue external port so as to avoid port clashes
-- Deploys the DacPac to the container
-- Tears down the container
+![team development](https://user-images.githubusercontent.com/15145995/46342585-0556b380-c633-11e8-96cf-18c34d17c717.PNG)
+
+# Avoiding External Port Clashes
+
+In software development speak, "Mutual exclusion" is a means of ensuring that only one thread or process can access a specific code path at a time. We see this in multiple places through the SQL Server database engine:
+
+- Locks
+- Latches
+- Spinlocks
+
+In this specific example we need to ensure that when spinning up containers, multiple containers do not attempt to start using the same port on the host. We achieve this using the lockable resource plugin for Jenkins:
+
+
+
+
