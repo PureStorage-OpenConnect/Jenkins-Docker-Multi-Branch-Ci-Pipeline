@@ -11,9 +11,8 @@ In software development speak, "Mutual exclusion" is a means of ensuring that on
 - Spinlocks
 ---
 @snap[north-west]
-# External Port Contention ! 
+# Lockable Resources 
 @snapend
-In the example pipeline, the section that begins with "lock (" is all important:
 
 ![lockable resource](https://user-images.githubusercontent.com/15145995/46342829-b1989a00-c633-11e8-8054-07b23a202d13.PNG)
 ---
