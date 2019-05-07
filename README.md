@@ -1,4 +1,4 @@
-# Devloping Software In Teams
+# Developing Software In Teams
 
 ![team development](https://user-images.githubusercontent.com/15145995/46342585-0556b380-c633-11e8-96cf-18c34d17c717.PNG)
 
